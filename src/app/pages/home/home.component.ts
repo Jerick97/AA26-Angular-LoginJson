@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Usuarios } from 'src/app/interfaces/usuarios';
 import { PermisosService } from 'src/app/services/permisos.service';
 
@@ -9,18 +10,15 @@ import { PermisosService } from 'src/app/services/permisos.service';
 })
 export class HomeComponent implements OnInit {
   users !: Usuarios[]; //declaramos un array utilizando nuestra interface Usuarios
-  constructor(private usuariosService:PermisosService) {
+  page: number = 1; //pagina actual
+  constructor(private usuariosService:PermisosService, private router:Router) {
     this.getUsuarios(); //llamamos al método traer Usuarios
   }
 
   ngOnInit(): void {
 
   }
-
-  Logout(){
-    this.usuariosService.logout(); //cerrar sesión
-  }
-
+  //obtener todos los usuarios del servicio
   getUsuarios(){
     //utilizando nuestro método getUsuarios traemos todos los usuarios del Json y lo almacenamos en nuestro Array users
     this.usuariosService.getUsuarios().subscribe(
@@ -29,4 +27,10 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  //Redireccionar a la página Detalle y el id
+  Detalle(id : number){
+    this.router.navigate(['/detalle',id]);
+  }
+
 }
